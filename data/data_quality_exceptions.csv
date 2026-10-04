@@ -1,0 +1,3 @@
+exception_id,exception_date,bond_id,exception_type,exception_detail,resolution,resolved
+1,2026-04-30,USM-107,clean_price_review,Potentially large clean-price move flagged for simulation review,Reviewed and retained because the move is part of the controlled simulation,TRUE
+2,2026-04-30,USM-102,accrual_risk,Accrual reset near coupon date reviewed,Verified coupon timing and retained as a valid being-paid observation,TRUE

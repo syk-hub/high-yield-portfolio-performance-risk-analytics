@@ -1,0 +1,15 @@
+field_name,classification,source,description
+bond_id,assigned,simulated,Unique identifier assigned to the simulated bond issue
+issuer,verified,issuer_document,Issuer name from source documents or simulation label
+sector,assigned,simulated,Sector bucket mapped to issuer activity
+rating,verified_or_assigned,issuer_doc_or_simulated,Credit rating from source or assigned bucket where source is unavailable
+maturity_date,verified,issuer_document,Maturity date from contractual terms
+coupon_rate,verified,issuer_document,Annual coupon rate from issue terms
+coupon_frequency,verified,issuer_document,Contractually defined coupon schedule
+day_count_basis,verified,issuer_document,Day-count convention used for accrued interest and cash
+clean_price_begin,simulated,simulation,Beginning clean price used in the snapshot
+clean_price_end,simulated,simulation,Ending clean price used in the snapshot
+accrued_begin,calculated,derived,Accrued interest computed using contractual coupon schedule
+accrued_end,calculated,derived,Accrued interest computed using contractual coupon schedule
+duration,simulated,simulation,Effective duration input supplied for portfolio risk analysis
+oas_bp,simulated,simulation,Option-adjusted spread input supplied for portfolio risk analysis

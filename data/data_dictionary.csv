@@ -1,0 +1,15 @@
+field_name,description,provenance
+bond_id,Unique identifier for each bond issue,assigned
+issuer,Issuer name,verified
+sector,Sector classification,assigned
+rating,Issue credit rating,verified_or_assigned
+maturity_date,Final maturity date,verified
+coupon_rate,Annual coupon rate,verified
+coupon_frequency,Coupon payment frequency,verified
+day_count_basis,Contractual day-count convention,verified
+clean_price_begin,Beginning clean price per $100,simulated
+clean_price_end,Ending clean price per $100,simulated
+accrued_begin,Beginning accrued interest per $100,calculated
+accrued_end,Ending accrued interest per $100,calculated
+duration,Effective duration in years,simulated
+oas_bp,Option-adjusted spread in basis points,simulated
