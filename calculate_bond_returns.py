@@ -20,6 +20,7 @@ START_DATE = date(2026, 3, 31)
 END_DATE = date(2026, 4, 30)
 REQUIRED_DATES = {START_DATE, END_DATE}
 BASE_DIR = Path(__file__).resolve().parent
+INPUT_DIR = BASE_DIR / "inputs"
 
 
 @dataclass(frozen=True)
@@ -233,8 +234,8 @@ def calculate_bond_returns(
 
 
 def main() -> None:
-    candidates = read_candidates(BASE_DIR / "bond_candidates.csv")
-    prices = read_prices(BASE_DIR / "simulated_prices.csv", set(candidates))
+    candidates = read_candidates(INPUT_DIR / "bond_candidates.csv")
+    prices = read_prices(INPUT_DIR / "simulated_prices.csv", set(candidates))
     results = calculate_bond_returns(candidates, prices)
 
     print("Project convention: 30/360 US (not distinguished in reviewed excerpts).")

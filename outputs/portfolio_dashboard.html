@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>High-yield portfolio | Performance &amp; risk</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #172a3b; --muted: #526879; --paper: #f8f5ed;
+      --card: #fffefa; --line: #ded8ca; --navy: #102b43;
+      --blue: #315f82; --teal: #087f70; --amber: #bd9142;
+      --positive: #176a58; --negative: #a34437;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink);
+      font: 16px/1.55 "Segoe UI", Arial, sans-serif; }
+    .shell { max-width: 1240px; margin: 0 auto; padding: 34px 26px 52px; }
+    .hero { padding: 30px 32px; background: var(--navy); color: #fff;
+      border-radius: 18px; border-bottom: 4px solid var(--amber); }
+    .eyebrow { margin: 0 0 8px; text-transform: uppercase; letter-spacing: .12em;
+      font-size: .76rem; font-weight: 700; color: #c7d6e2; }
+    h1 { margin: 0; color: #fff; font-size: clamp(1.85rem, 3.2vw, 2.8rem);
+      line-height: 1.13; letter-spacing: .025em; font-weight: 800; }
+    .period { margin: 9px 0 0; color: #d4e0e8; }
+    .disclosure { margin: 18px 0 0; padding: 12px 15px; border-left: 4px solid #e4aa63;
+      background: rgba(255,255,255,.09); border-radius: 4px 9px 9px 4px; }
+    .kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 15px; margin: 20px 0; }
+    .kpi, .panel { background: var(--card); border: 1px solid var(--line);
+      border-radius: 14px; box-shadow: 0 4px 16px rgba(24,44,61,.045); }
+    .kpi { padding: 19px 20px 17px; min-height: 132px;
+      border-top: 3px solid var(--teal); }
+    .kpi-label { margin: 0; color: #40576a; font-size: .9rem; font-weight: 700; }
+    .kpi-value { margin: 8px 0 3px; color: var(--navy);
+      font-size: clamp(1.55rem, 2.4vw, 2.1rem); font-weight: 800;
+      letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+    .kpi-status { color: var(--muted); font-size: .72rem; text-transform: uppercase;
+      letter-spacing: .09em; }
+    .panel { margin-top: 18px; padding: 22px 22px 20px; }
+    .panel h2 { margin: 0; color: var(--navy); font-size: 1.26rem;
+      font-weight: 750; letter-spacing: -.01em; }
+    .panel-intro { margin: 5px 0 15px; color: var(--muted); font-size: .91rem; }
+    .chart-wrap { overflow-x: auto; }
+    .chart { display: block; width: 100%; min-width: 740px; height: auto; }
+    .grid-line { stroke: #e9e3d8; stroke-width: 1; }
+    .zero-line { stroke: #718395; stroke-width: 1.5; }
+    .axis-label { fill: #465d70; font: 12px "Segoe UI", Arial, sans-serif; }
+    .axis-title { fill: #30495d; font: 700 12px "Segoe UI", Arial, sans-serif; }
+    .bond-label { fill: #263e52; font: 12px "Segoe UI", Arial, sans-serif; }
+    .legend { display: flex; flex-wrap: wrap; gap: 18px; margin: 5px 0 0 9px;
+      color: var(--muted); font-size: .85rem; }
+    .legend span { display: inline-flex; align-items: center; gap: 7px; }
+    .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    th, td { padding: 11px 12px; border-bottom: 1px solid var(--line);
+      text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+    thead th { color: #203b50; background: #f1eee5; font-size: .8rem;
+      font-weight: 750; letter-spacing: .035em; }
+    th:first-child, td:first-child { text-align: left; }
+    tbody th { font-weight: 600; }
+    tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+    .risk-table th:nth-child(2), .risk-table td:nth-child(2) { text-align: left; }
+    .method { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .method p { margin: 8px 0 0; color: #4e6374; font-size: .91rem; }
+    .footnote { margin: 17px 4px 0; color: var(--muted); font-size: .8rem; }
+    abbr[title], [title] { text-decoration: none; }
+    .term { text-decoration: underline dotted; text-underline-offset: 3px; cursor: help; }
+    @media (max-width: 850px) {
+      .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 560px) {
+      .shell { padding: 15px 12px 32px; }
+      .hero { padding: 22px 18px; border-radius: 13px; }
+      .kpis { gap: 9px; margin: 12px 0; }
+      .kpi { padding: 13px; min-height: 112px; }
+      .kpi-value { font-size: 1.28rem; }
+      .panel { padding: 17px 14px; margin-top: 12px; }
+      .method { grid-template-columns: 1fr; gap: 12px; }
+    }
+    @media print {
+      body { background: #fff; }
+      .shell { max-width: none; padding: 0; }
+      .hero { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .panel, .kpi { box-shadow: none; break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <p class="eyebrow">Simulated teaching portfolio</p>
+      <h1>HIGH-YIELD PORTFOLIO PERFORMANCE &amp; RISK</h1>
+      <p class="period">March 31–April 30, 2026</p>
+      <p class="disclosure"><strong>Important disclosure:</strong> Bond terms are based on documented real-bond evidence. Prices, holdings, duration, and OAS are simulated. Bond eligibility evidence remains incomplete, including unresolved identifier, rating, call-term, and outstanding-principal checks. Results are illustrative, not actual market performance or investment advice.</p>
+    </header>
+
+    <section class="kpis" aria-label="Portfolio summary"><article class="kpi" title="Portfolio total return over the period, including price change, accrued interest, and coupon cash."><p class="kpi-label">Portfolio return</p><p class="kpi-value">0.64%</p><span class="kpi-status">simulated</span></article><article class="kpi" title="Return on the constructed same-universe benchmark; it is not a market index."><p class="kpi-label">Constructed benchmark return</p><p class="kpi-value">0.48%</p><span class="kpi-status">simulated</span></article><article class="kpi" title="Portfolio return minus constructed benchmark return. One basis point is 0.01 percentage point."><p class="kpi-label">Active return</p><p class="kpi-value">16.14 bps</p><span class="kpi-status">simulated</span></article><article class="kpi" title="Ending net asset value: ending dirty bond value plus retained coupon cash."><p class="kpi-label">Ending NAV</p><p class="kpi-value">$1,007,641.23</p><span class="kpi-status">simulated</span></article></section>
+
+    <section class="panel" aria-labelledby="contributions-title">
+      <h2 id="contributions-title">Bond contribution: price and income</h2>
+      <p class="panel-intro">Portfolio contribution components, shown in percentage points. Hover over a bar for its exact value. <span class="term" title="Price contribution is the bond's price-return component multiplied by its beginning portfolio weight.">Price contribution</span> and <span class="term" title="Income contribution includes coupon cash and accrued-interest change, weighted by the beginning portfolio weight.">income contribution</span> sum to each bond's total portfolio contribution.</p>
+      <div class="chart-wrap"><svg class="chart" viewBox="0 0 1120 594" role="img" aria-label="Horizontal price and income contribution chart in percentage points"><title>Portfolio contribution by bond, in percentage points</title><line x1="300.00" y1="34" x2="300.00" y2="550" class="grid-line"/><text x="300.00" y="580" class="axis-label" text-anchor="middle">-0.2</text><line x1="495.00" y1="34" x2="495.00" y2="550" class="grid-line"/><text x="495.00" y="580" class="axis-label" text-anchor="middle">-0.1</text><line x1="690.00" y1="34" x2="690.00" y2="550" class="grid-line"/><text x="690.00" y="580" class="axis-label" text-anchor="middle">0</text><line x1="885.00" y1="34" x2="885.00" y2="550" class="grid-line"/><text x="885.00" y="580" class="axis-label" text-anchor="middle">0.1</text><line x1="1080.00" y1="34" x2="1080.00" y2="550" class="grid-line"/><text x="1080.00" y="580" class="axis-label" text-anchor="middle">0.2</text><line x1="690.00" y1="34" x2="690.00" y2="550" class="zero-line"/><text x="284" y="62" class="bond-label" text-anchor="end"><title>Celanese US Holdings LLC</title>Celanese US Holdings LLC</text><rect x="690.00" y="46" width="292.15" height="9" rx="4.5" fill="#3976a8"><title>Celanese US Holdings LLC — price contribution: 0.1498 percentage points</title></rect><rect x="690.00" y="61" width="152.97" height="9" rx="4.5" fill="#26917f"><title>Celanese US Holdings LLC — income contribution: 0.0784 percentage points</title></rect><text x="284" y="110" class="bond-label" text-anchor="end"><title>Magnolia Oil &amp; Gas Operating LLC; Magnolia Oil &amp; Gas Finance Corp.</title>Magnolia Oil &amp; Gas Operating LL...</text><rect x="690.00" y="94" width="121.73" height="9" rx="4.5" fill="#3976a8"><title>Magnolia Oil &amp; Gas Operating LLC; Magnolia Oil &amp; Gas Finance Corp. — price contribution: 0.0624 percentage points</title></rect><rect x="690.00" y="109" width="134.83" height="9" rx="4.5" fill="#26917f"><title>Magnolia Oil &amp; Gas Operating LLC; Magnolia Oil &amp; Gas Finance Corp. — income contribution: 0.0691 percentage points</title></rect><text x="284" y="158" class="bond-label" text-anchor="end"><title>Bath &amp; Body Works, Inc.</title>Bath &amp; Body Works, Inc.</text><rect x="592.62" y="142" width="97.38" height="9" rx="4.5" fill="#3976a8"><title>Bath &amp; Body Works, Inc. — price contribution: -0.0499 percentage points</title></rect><rect x="690.00" y="157" width="103.94" height="9" rx="4.5" fill="#26917f"><title>Bath &amp; Body Works, Inc. — income contribution: 0.0533 percentage points</title></rect><text x="284" y="206" class="bond-label" text-anchor="end"><title>The Goodyear Tire &amp; Rubber Company</title>The Goodyear Tire &amp; Rubber Company</text><rect x="543.93" y="190" width="146.07" height="9" rx="4.5" fill="#3976a8"><title>The Goodyear Tire &amp; Rubber Company — price contribution: -0.0749 percentage points</title></rect><rect x="690.00" y="205" width="63.91" height="9" rx="4.5" fill="#26917f"><title>The Goodyear Tire &amp; Rubber Company — income contribution: 0.0328 percentage points</title></rect><text x="284" y="254" class="bond-label" text-anchor="end"><title>United Rentals (North America), Inc.</title>United Rentals (North America),...</text><rect x="690.00" y="238" width="60.86" height="9" rx="4.5" fill="#3976a8"><title>United Rentals (North America), Inc. — price contribution: 0.0312 percentage points</title></rect><rect x="690.00" y="253" width="102.96" height="9" rx="4.5" fill="#26917f"><title>United Rentals (North America), Inc. — income contribution: 0.0528 percentage points</title></rect><text x="284" y="302" class="bond-label" text-anchor="end"><title>CCO Holdings, LLC; CCO Holdings Capital Corp.</title>CCO Holdings, LLC; CCO Holdings...</text><rect x="580.44" y="286" width="109.56" height="9" rx="4.5" fill="#3976a8"><title>CCO Holdings, LLC; CCO Holdings Capital Corp. — price contribution: -0.0562 percentage points</title></rect><rect x="690.00" y="301" width="52.95" height="9" rx="4.5" fill="#26917f"><title>CCO Holdings, LLC; CCO Holdings Capital Corp. — income contribution: 0.0272 percentage points</title></rect><text x="284" y="350" class="bond-label" text-anchor="end"><title>Cleveland-Cliffs Inc.</title>Cleveland-Cliffs Inc.</text><rect x="616.96" y="334" width="73.04" height="9" rx="4.5" fill="#3976a8"><title>Cleveland-Cliffs Inc. — price contribution: -0.0375 percentage points</title></rect><rect x="690.00" y="349" width="79.43" height="9" rx="4.5" fill="#26917f"><title>Cleveland-Cliffs Inc. — income contribution: 0.0407 percentage points</title></rect><text x="284" y="398" class="bond-label" text-anchor="end"><title>Range Resources Corporation</title>Range Resources Corporation</text><rect x="690.00" y="382" width="182.59" height="9" rx="4.5" fill="#3976a8"><title>Range Resources Corporation — price contribution: 0.0936 percentage points</title></rect><rect x="690.00" y="397" width="93.16" height="9" rx="4.5" fill="#26917f"><title>Range Resources Corporation — income contribution: 0.0478 percentage points</title></rect><text x="284" y="446" class="bond-label" text-anchor="end"><title>Sirius XM Radio LLC</title>Sirius XM Radio LLC</text><rect x="690.00" y="430" width="0.00" height="9" rx="4.5" fill="#3976a8"><title>Sirius XM Radio LLC — price contribution: 0.0000 percentage points</title></rect><rect x="690.00" y="445" width="32.36" height="9" rx="4.5" fill="#26917f"><title>Sirius XM Radio LLC — income contribution: 0.0166 percentage points</title></rect><text x="284" y="494" class="bond-label" text-anchor="end"><title>Gates Corporation</title>Gates Corporation</text><rect x="690.00" y="478" width="97.38" height="9" rx="4.5" fill="#3976a8"><title>Gates Corporation — price contribution: 0.0499 percentage points</title></rect><rect x="690.00" y="493" width="107.86" height="9" rx="4.5" fill="#26917f"><title>Gates Corporation — income contribution: 0.0553 percentage points</title></rect><text x="690.0" y="593" class="axis-title" text-anchor="middle">Contribution (percentage points)</text></svg></div>
+      <div class="legend" aria-label="Chart legend">
+        <span><i class="swatch" style="background:#3976a8"></i>Price</span>
+        <span><i class="swatch" style="background:#26917f"></i>Income</span>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="active-title">
+      <h2 id="active-title">Active contribution by bond</h2>
+      <p class="panel-intro">Basis points of portfolio active return attributable to the difference between each portfolio weight and the benchmark's 10% beginning weight. Hover for exact values.</p>
+      <div class="chart-wrap"><svg class="chart" viewBox="0 0 1120 504" role="img" aria-label="Horizontal active contribution chart in basis points"><title>Active contribution by bond, in basis points</title><line x1="300.00" y1="34" x2="300.00" y2="454" class="grid-line"/><text x="300.00" y="487" class="axis-label" text-anchor="middle">-5</text><line x1="560.00" y1="34" x2="560.00" y2="454" class="grid-line"/><text x="560.00" y="487" class="axis-label" text-anchor="middle">0</text><line x1="820.00" y1="34" x2="820.00" y2="454" class="grid-line"/><text x="820.00" y="487" class="axis-label" text-anchor="middle">5</text><line x1="1080.00" y1="34" x2="1080.00" y2="454" class="grid-line"/><text x="1080.00" y="487" class="axis-label" text-anchor="middle">10</text><line x1="560.00" y1="34" x2="560.00" y2="454" class="zero-line"/><text x="284" y="53" class="bond-label" text-anchor="end"><title>Celanese US Holdings LLC</title>Celanese US Holdings LLC</text><rect x="560.00" y="42" width="402.53" height="15" rx="7.5" fill="#c27b3a"><title>Celanese US Holdings LLC — active contribution: 7.7409 basis points</title></rect><text x="284" y="95" class="bond-label" text-anchor="end"><title>Magnolia Oil &amp; Gas Operating LLC; Magnolia Oil &amp; Gas Finance Corp.</title>Magnolia Oil &amp; Gas Operating LL...</text><rect x="560.00" y="84" width="148.45" height="15" rx="7.5" fill="#c27b3a"><title>Magnolia Oil &amp; Gas Operating LLC; Magnolia Oil &amp; Gas Finance Corp. — active contribution: 2.8547 basis points</title></rect><text x="284" y="137" class="bond-label" text-anchor="end"><title>Bath &amp; Body Works, Inc.</title>Bath &amp; Body Works, Inc.</text><rect x="560.00" y="126" width="0.37" height="15" rx="7.5" fill="#c27b3a"><title>Bath &amp; Body Works, Inc. — active contribution: 0.0072 basis points</title></rect><text x="284" y="179" class="bond-label" text-anchor="end"><title>The Goodyear Tire &amp; Rubber Company</title>The Goodyear Tire &amp; Rubber Company</text><rect x="560.00" y="168" width="81.85" height="15" rx="7.5" fill="#c27b3a"><title>The Goodyear Tire &amp; Rubber Company — active contribution: 1.5741 basis points</title></rect><text x="284" y="221" class="bond-label" text-anchor="end"><title>United Rentals (North America), Inc.</title>United Rentals (North America),...</text><rect x="560.00" y="210" width="90.79" height="15" rx="7.5" fill="#c27b3a"><title>United Rentals (North America), Inc. — active contribution: 1.7459 basis points</title></rect><text x="284" y="263" class="bond-label" text-anchor="end"><title>CCO Holdings, LLC; CCO Holdings Capital Corp.</title>CCO Holdings, LLC; CCO Holdings...</text><rect x="560.00" y="252" width="62.12" height="15" rx="7.5" fill="#c27b3a"><title>CCO Holdings, LLC; CCO Holdings Capital Corp. — active contribution: 1.1945 basis points</title></rect><text x="284" y="305" class="bond-label" text-anchor="end"><title>Cleveland-Cliffs Inc.</title>Cleveland-Cliffs Inc.</text><rect x="554.32" y="294" width="5.68" height="15" rx="7.5" fill="#c27b3a"><title>Cleveland-Cliffs Inc. — active contribution: -0.1093 basis points</title></rect><text x="284" y="347" class="bond-label" text-anchor="end"><title>Range Resources Corporation</title>Range Resources Corporation</text><rect x="560.00" y="336" width="144.03" height="15" rx="7.5" fill="#c27b3a"><title>Range Resources Corporation — active contribution: 2.7698 basis points</title></rect><text x="284" y="389" class="bond-label" text-anchor="end"><title>Sirius XM Radio LLC</title>Sirius XM Radio LLC</text><rect x="466.36" y="378" width="93.64" height="15" rx="7.5" fill="#c27b3a"><title>Sirius XM Radio LLC — active contribution: -1.8008 basis points</title></rect><text x="284" y="431" class="bond-label" text-anchor="end"><title>Gates Corporation</title>Gates Corporation</text><rect x="560.00" y="420" width="8.60" height="15" rx="7.5" fill="#c27b3a"><title>Gates Corporation — active contribution: 0.1654 basis points</title></rect><text x="690.0" y="503" class="axis-title" text-anchor="middle">Active contribution (basis points)</text></svg></div>
+    </section>
+
+    <section class="panel" aria-labelledby="risk-title">
+      <h2 id="risk-title">Portfolio and benchmark risk</h2>
+      <p class="panel-intro">Risk observations at each valuation date. <span class="term" title="Effective duration measures price sensitivity to a parallel shift in the reference interest-rate curve, accounting for embedded options.">Effective duration</span> is shown in years; <span class="term" title="Average bond OAS is the market-value-weighted average option-adjusted spread across bonds, in basis points.">average bond OAS</span> is in basis points. Cash weight is retained coupon cash divided by NAV.</p>
+      <div class="table-wrap">
+        <table class="risk-table">
+          <thead><tr><th scope="col">Valuation date</th><th scope="col">Portfolio</th><th scope="col" title="Sensitivity to a parallel shift in the reference interest-rate curve, accounting for embedded options; portfolio duration is market-value weighted.">Effective duration</th><th scope="col" title="Market-value-weighted average option-adjusted spread across bonds.">Average bond OAS</th><th scope="col" title="Retained coupon cash divided by NAV.">Cash weight</th></tr></thead>
+          <tbody><tr><th scope="row">March 31, 2026</th><td>Portfolio</td><td>3.073 years</td><td>325.4 bps</td><td>0.00%</td></tr><tr><th scope="row">March 31, 2026</th><td>Constructed benchmark</td><td>3.070 years</td><td>340.0 bps</td><td>0.00%</td></tr><tr><th scope="row">April 30, 2026</th><td>Portfolio</td><td>3.034 years</td><td>324.5 bps</td><td>1.26%</td></tr><tr><th scope="row">April 30, 2026</th><td>Constructed benchmark</td><td>3.031 years</td><td>339.1 bps</td><td>1.25%</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="holdings-title">
+      <h2 id="holdings-title">Bond holdings and contributions</h2>
+      <p class="panel-intro">Returns and weights are percentages; portfolio contribution is in percentage points, and active contribution is in basis points.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th scope="col">Legal issuer</th><th scope="col" title="Beginning dirty market value divided by beginning portfolio NAV.">Beginning weight</th><th scope="col" title="Bond total return includes dirty-price movement and coupon cash, per $100 face.">Bond return</th><th scope="col" title="Beginning portfolio weight multiplied by the bond total return.">Portfolio contribution</th><th scope="col" title="Portfolio beginning weight minus benchmark beginning weight, multiplied by bond return.">Active contribution</th></tr></thead>
+          <tbody><tr><th scope="row"><span title="CELANESE_6.500_2030">Celanese US Holdings LLC</span></th><td>15.13%</td><td>1.51%</td><td>0.228 pp</td><td>7.74 bps</td></tr><tr><th scope="row"><span title="MAGNOLIA_6.875_2032">Magnolia Oil &amp; Gas Operating LLC; Magnolia Oil &amp; Gas Finance Corp.</span></th><td>12.77%</td><td>1.03%</td><td>0.132 pp</td><td>2.85 bps</td></tr><tr><th scope="row"><span title="BBW_6.625_2030">Bath &amp; Body Works, Inc.</span></th><td>10.22%</td><td>0.03%</td><td>0.003 pp</td><td>0.01 bps</td></tr><tr><th scope="row"><span title="GOODYEAR_5.250_APR2031">The Goodyear Tire &amp; Rubber Company</span></th><td>7.28%</td><td>-0.58%</td><td>-0.042 pp</td><td>1.57 bps</td></tr><tr><th scope="row"><span title="URNA_5.250_2030">United Rentals (North America), Inc.</span></th><td>12.62%</td><td>0.67%</td><td>0.084 pp</td><td>1.75 bps</td></tr><tr><th scope="row"><span title="CCO_4.500_2030">CCO Holdings, LLC; CCO Holdings Capital Corp.</span></th><td>7.08%</td><td>-0.41%</td><td>-0.029 pp</td><td>1.19 bps</td></tr><tr><th scope="row"><span title="CLF_6.750_2030">Cleveland-Cliffs Inc.</span></th><td>7.50%</td><td>0.04%</td><td>0.003 pp</td><td>-0.11 bps</td></tr><tr><th scope="row"><span title="RANGE_4.750_2030">Range Resources Corporation</span></th><td>12.44%</td><td>1.14%</td><td>0.141 pp</td><td>2.77 bps</td></tr><tr><th scope="row"><span title="SIRIUS_4.125_2030">Sirius XM Radio LLC</span></th><td>4.80%</td><td>0.35%</td><td>0.017 pp</td><td>-1.80 bps</td></tr><tr><th scope="row"><span title="GATES_6.875_2029">Gates Corporation</span></th><td>10.16%</td><td>1.04%</td><td>0.105 pp</td><td>0.17 bps</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel method" aria-labelledby="method-title">
+      <div>
+        <h2 id="method-title">Methodology</h2>
+        <p><span class="term" title="Dirty price equals clean price plus accrued interest.">Dirty-price returns</span> include coupon cash; received coupons are retained as cash. The constructed benchmark has equal beginning dirty-market-value weights across the ten bonds and holds fixed face positions. Cash earns zero interest.</p>
+      </div>
+      <div>
+        <h2>Interpretation</h2>
+        <p>Portfolio allocations were selected after reviewing simulated returns. Duration and OAS are broad illustrative teaching inputs, not calibrated security-level market observations. Eligibility evidence and several bond-level checks remain unresolved; see the research documentation for details.</p>
+      </div>
+    </section>
+    <p class="footnote">All figures are generated from the project's saved CSV results. Monetary values are USD. This self-contained page requires no server or external libraries.</p>
+  </main>
+</body>
+</html>

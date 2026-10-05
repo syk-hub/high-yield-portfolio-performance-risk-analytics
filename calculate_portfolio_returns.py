@@ -6,6 +6,7 @@ from pathlib import Path
 
 from calculate_bond_returns import (
     BASE_DIR,
+    INPUT_DIR,
     calculate_bond_returns,
     read_candidates,
     read_prices,
@@ -74,9 +75,9 @@ def read_holdings(path: Path, candidate_ids: set[str]) -> dict[str, Decimal]:
 def main() -> None:
     with localcontext() as context:
         context.prec = 50
-        candidates = read_candidates(BASE_DIR / "bond_candidates.csv")
-        prices = read_prices(BASE_DIR / "simulated_prices.csv", set(candidates))
-        holdings = read_holdings(BASE_DIR / "portfolio_holdings.csv", set(candidates))
+        candidates = read_candidates(INPUT_DIR / "bond_candidates.csv")
+        prices = read_prices(INPUT_DIR / "simulated_prices.csv", set(candidates))
+        holdings = read_holdings(INPUT_DIR / "portfolio_holdings.csv", set(candidates))
         bond_returns = calculate_bond_returns(candidates, prices)
         if len(bond_returns) != 10:
             raise ValueError(

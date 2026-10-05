@@ -667,7 +667,7 @@ wealth.
 
 ## Simulated teaching allocations
 
-The face values in `portfolio_holdings.csv` are simulated teaching
+The face values in `inputs/portfolio_holdings.csv` are simulated teaching
 allocations totaling $1,000,000. They were selected after inspecting
 the simulated bond returns above; therefore, any portfolio performance
 calculated from these allocations is illustrative and does not
@@ -694,7 +694,7 @@ in `outputs/portfolio_contributions.csv`.
 
 ## Simulated risk inputs
 
-The effective-duration and OAS values in `simulated_risk_inputs.csv`
+The effective-duration and OAS values in `inputs/simulated_risk_inputs.csv`
 are teaching assumptions, not market observations or model-derived
 measures. They are held constant between March 31 and April 30, 2026
 to isolate the effects of portfolio weighting and coupon cash. These

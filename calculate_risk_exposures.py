@@ -8,6 +8,7 @@ from pathlib import Path
 from calculate_bond_returns import (
     BASE_DIR,
     END_DATE,
+    INPUT_DIR,
     START_DATE,
     calculate_bond_returns,
     read_candidates,
@@ -167,12 +168,12 @@ def calculate_exposure(
 def main() -> None:
     with localcontext() as context:
         context.prec = 50
-        candidates = read_candidates(BASE_DIR / "bond_candidates.csv")
+        candidates = read_candidates(INPUT_DIR / "bond_candidates.csv")
         candidate_ids = set(candidates)
-        prices = read_prices(BASE_DIR / "simulated_prices.csv", candidate_ids)
-        holdings = read_holdings(BASE_DIR / "portfolio_holdings.csv", candidate_ids)
+        prices = read_prices(INPUT_DIR / "simulated_prices.csv", candidate_ids)
+        holdings = read_holdings(INPUT_DIR / "portfolio_holdings.csv", candidate_ids)
         risk_inputs = read_risk_inputs(
-            BASE_DIR / "simulated_risk_inputs.csv", candidate_ids
+            INPUT_DIR / "simulated_risk_inputs.csv", candidate_ids
         )
         bond_returns = calculate_bond_returns(candidates, prices)
         if len(candidate_ids) != 10:
